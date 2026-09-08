@@ -1,4 +1,6 @@
-# donga_oss
+### Acknowledgement
+
+Thanks to Jonghawn
 
 ## 자기소개
 
