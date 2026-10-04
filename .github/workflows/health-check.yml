@@ -3,8 +3,8 @@ name: Health Check
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/5 * * * *" # 5분마다 실행
+  #schedule:
+  #- cron: "*/5 * * * *" # 5분마다 실행
 
 jobs:
   health-check:
