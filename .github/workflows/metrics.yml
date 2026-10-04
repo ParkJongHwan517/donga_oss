@@ -21,3 +21,11 @@ jobs:
           LEAD_TIME=$(($(date -d "$MERGE_TIME" +%s) - $(date -d "$FIRST_COMMIT_TIME" +%s)))
 
           echo "Lead Time: $LEAD_TIME seconds"
+
+          echo "{\"lead_time\": $LEAD_TIME}" > metrics.json
+
+      - name: Upload Metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: dora-metrics
+          path: metrics.json
