@@ -1,0 +1,15 @@
+# .github/workflows/deploy-tracker.yml
+name: Track Deployment
+
+on:
+  deployment:
+
+jobs:
+  track-deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Log Deployment
+        run: |
+          echo "Deployment Date: $(date)"
+          echo "Environment: ${{ github.event.deployment.environment }}"

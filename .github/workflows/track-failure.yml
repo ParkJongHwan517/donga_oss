@@ -1,0 +1,20 @@
+# .github/workflows/track-failure.yml
+name: Track Deployment Failure
+
+on:
+  deployment_status:
+
+jobs:
+  track-failure:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Deployment Status
+        run: |
+          STATUS="${{ github.event.deployment_status.state }}"
+
+          if [ "$STATUS" = "success" ]; then
+            echo "Deployment succeeded"
+          else
+            echo "Deployment failed"
+          fi
