@@ -1,0 +1,22 @@
+name: Weekly Report
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Report
+        run: |
+          echo "# Weekly DORA Report" > weekly-report.md
+          echo "Weekly metrics report generated." >> weekly-report.md
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-report
+          path: weekly-report.md
