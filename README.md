@@ -311,3 +311,5 @@ GitHub Actions를 이용하여 DORA 지표를 수집하였다.
 Chart.js를 이용하여 배포 결과를 시각화하였다.
 
 ![DORA Metrics](docs/images/subject.png)
+
+<!-- test -->
