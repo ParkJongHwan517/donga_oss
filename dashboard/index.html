@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DORA Metrics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <h2>DORA Metrics</h2>
+
+    <table border="1" cellpadding="8">
+      <tr>
+        <th>Metric</th>
+        <th>Result</th>
+      </tr>
+      <tr>
+        <td>Lead Time</td>
+        <td>520 seconds</td>
+      </tr>
+      <tr>
+        <td>Deployment Frequency</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>MTTR</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td>Change Failure Rate</td>
+        <td>0%</td>
+      </tr>
+    </table>
+
+    <h3>Deployment Result</h3>
+
+    <div style="width: 500px">
+      <canvas id="deploymentChart"></canvas>
+    </div>
+
+    <script>
+      const ctx = document.getElementById("deploymentChart");
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Success", "Failure"],
+          datasets: [
+            {
+              label: "Deployments",
+              data: [1, 0],
+            },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>

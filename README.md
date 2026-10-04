@@ -294,3 +294,20 @@ FIT은 사용자가 이미 가지고 있는 잘 맞는 옷을 기준으로 이 �
 - UI/UX 개선
 
 **목표:** 최종 개선으로 배포가능 수준 끌어올림
+
+---
+
+## DORA Metrics
+
+GitHub Actions를 이용하여 DORA 지표를 수집하였다.
+
+- Lead Time: 520 seconds
+- Deployment Frequency: 1
+- MTTR: N/A
+- Change Failure Rate: 0%
+
+### Dashboard
+
+Chart.js를 이용하여 배포 결과를 시각화하였다.
+
+![DORA Metrics](docs/images/dora-dashboard.png)
