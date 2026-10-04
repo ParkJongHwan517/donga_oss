@@ -1,3 +1,4 @@
+# .github/workflows/metrics.yml
 name: Track Lead Time
 
 on:
@@ -9,6 +10,7 @@ jobs:
     # PR이 병합되었을 때만 실행
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
     steps:
       - name: Calculate Lead Time
         run: |
