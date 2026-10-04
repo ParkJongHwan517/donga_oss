@@ -6,6 +6,10 @@ __pycache__/
 
 old_files/
 
+test/
+
+# API Keys
+.env
 # C extensions
 *.so
 
@@ -219,3 +223,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# 도매꾹 검증 산출물 (다운로드 이미지, OCR 중간 파일, 결과 JSON)
+test/output/
+test/domeggook_test_results.json
