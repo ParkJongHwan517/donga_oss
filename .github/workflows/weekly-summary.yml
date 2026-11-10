@@ -1,0 +1,53 @@
+# 지난 7일간의 이슈/PR 활동을 요약하는 이슈를 매주 월요일에 만든다. (초안)
+name: Weekly Summary
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1" # 매주 월요일 00:00 UTC
+
+permissions:
+  issues: write
+  pull-requests: read
+
+jobs:
+  summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create weekly summary issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          SINCE=$(date -u -d "7 days ago" +%Y-%m-%d)
+          TODAY=$(date -u +%Y-%m-%d)
+
+          MERGED=$(gh pr list --repo "$REPO" --state merged --search "merged:>=$SINCE" --json number --jq 'length')
+          OPENED=$(gh issue list --repo "$REPO" --state all --search "created:>=$SINCE" --json number --jq 'length')
+          CLOSED=$(gh issue list --repo "$REPO" --state closed --search "closed:>=$SINCE" --json number --jq 'length')
+          OPEN_NOW=$(gh issue list --repo "$REPO" --state open --json number --jq 'length')
+
+          MERGED_LIST=$(gh pr list --repo "$REPO" --state merged --search "merged:>=$SINCE" \
+            --json number,title --jq '.[] | "- #\(.number) \(.title)"')
+
+          gh label create weekly-summary --repo "$REPO" --color 0E8A16 \
+            --description "주간 요약" 2>/dev/null || true
+
+          BODY="## 주간 요약 ($SINCE ~ $TODAY)
+
+          | 지표 | 값 |
+          |---|---|
+          | 병합된 PR | $MERGED |
+          | 새로 열린 이슈 | $OPENED |
+          | 닫힌 이슈 | $CLOSED |
+          | 현재 열려 있는 이슈 | $OPEN_NOW |
+
+          ### 병합된 PR
+          ${MERGED_LIST:-없음}
+
+          _이 이슈는 Weekly Summary 워크플로우가 자동으로 생성했습니다._"
+
+          gh issue create --repo "$REPO" \
+            --title "주간 요약 $TODAY" \
+            --label weekly-summary \
+            --body "$BODY"
