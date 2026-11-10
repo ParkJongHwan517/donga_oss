@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1120" viewBox="0 0 1440 1120" role="img" aria-labelledby="title description">
+  <title id="title">훅메이커 썸네일 문구 생성 앱 와이어프레임</title>
+  <desc id="description">사용자가 유튜브 자막을 입력하고 영상 정보를 선택한 뒤, 자막 근거가 표시된 썸네일 문구 후보를 편집하고 복사하는 데스크톱 화면 설계도.</desc>
+  <defs>
+    <style>
+      text { font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; fill: #20242b; }
+      .muted { fill: #6b7280; }
+      .small { font-size: 13px; }
+      .body { font-size: 15px; }
+      .label { font-size: 14px; font-weight: 700; }
+      .heading { font-size: 21px; font-weight: 700; }
+      .line { stroke: #d7dbe2; stroke-width: 1.5; }
+      .box { fill: #ffffff; stroke: #d7dbe2; stroke-width: 1.5; }
+      .soft { fill: #f7f8fa; stroke: #e2e5ea; stroke-width: 1.2; }
+      .accent { fill: #5b5bd6; }
+      .accentText { fill: #ffffff; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="1120" fill="#f3f4f6"/>
+
+  <!-- Top navigation -->
+  <rect x="0" y="0" width="1440" height="76" fill="#ffffff"/>
+  <line x1="0" y1="76" x2="1440" y2="76" class="line"/>
+  <rect x="76" y="22" width="32" height="32" rx="9" fill="#5b5bd6"/>
+  <path d="M86 39h12M92 33v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="119" y="45" font-size="21" font-weight="700">훅메이커</text>
+  <text x="1310" y="44" class="small muted">자막은 생성에만 사용돼요</text>
+  <circle cx="1288" cy="39" r="4" fill="#4a9b70"/>
+
+  <!-- Page intro -->
+  <text x="100" y="128" class="small muted">썸네일 문구 만들기</text>
+  <text x="100" y="169" font-size="30" font-weight="700">영상의 핵심을, 한눈에 꽂히는 문구로</text>
+  <text x="100" y="198" class="body muted">자막을 넣으면 영상 내용에 맞는 썸네일 문구 후보를 제안해요.</text>
+  <rect x="1191" y="132" width="149" height="34" rx="17" fill="#ffffff" stroke="#d7dbe2"/>
+  <circle cx="1211" cy="149" r="10" fill="#eeefff"/>
+  <text x="1208" y="153" font-size="11" font-weight="700" fill="#5b5bd6">1</text>
+  <text x="1228" y="154" class="small">자막 입력</text>
+  <text x="1310" y="154" class="small muted">→</text>
+  <text x="1325" y="154" class="small muted">후보 선택</text>
+
+  <!-- Main panels -->
+  <rect x="100" y="229" width="470" height="815" rx="14" class="box"/>
+  <rect x="590" y="229" width="750" height="815" rx="14" class="box"/>
+
+  <!-- Input panel -->
+  <text x="128" y="271" class="heading">1. 영상 정보 입력</text>
+  <text x="128" y="298" class="small muted">자막을 붙여 넣거나 파일을 선택하세요.</text>
+
+  <text x="128" y="339" class="label">영상 자막 <tspan fill="#d04a4a">*</tspan></text>
+  <rect x="128" y="355" width="414" height="290" rx="8" fill="#fff" stroke="#c9cdd5" stroke-width="1.5"/>
+  <text x="148" y="384" class="body muted">여기에 영상 자막을 붙여 넣으세요.</text>
+  <text x="148" y="420" class="small">오늘은 한 달 동안 매일 아침 5시에 일어나</text>
+  <text x="148" y="444" class="small">운동을 해본 결과를 이야기해보려고 합니다.</text>
+  <text x="148" y="468" class="small">처음에는 일찍 일어나는 게 가장 힘들었는데요...</text>
+  <text x="148" y="503" class="small muted">자막이 길어도 괜찮아요. 핵심 내용을 찾아볼게요.</text>
+  <line x1="148" y1="610" x2="522" y2="610" class="line"/>
+  <text x="148" y="630" class="small muted">예시 자막 미리보기</text>
+  <text x="514" y="630" class="small muted" text-anchor="end">1,248자</text>
+
+  <rect x="128" y="657" width="414" height="48" rx="8" fill="#fafaff" stroke="#bfc0f2" stroke-dasharray="5 4"/>
+  <path d="M157 677v11m-5-5 5 5 5-5M148 693h18" fill="none" stroke="#5b5bd6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="178" y="686" class="body" font-weight="700" fill="#4d4db8">자막 파일 선택</text>
+  <text x="519" y="686" class="small muted" text-anchor="end">.srt, .vtt</text>
+
+  <text x="128" y="745" class="label">영상 제목 <tspan class="muted" font-weight="400">(선택)</tspan></text>
+  <rect x="128" y="760" width="414" height="45" rx="7" class="box"/>
+  <text x="145" y="788" class="body muted">예: 한 달 동안 아침형 인간으로 살아보기</text>
+
+  <text x="128" y="841" class="label">원하는 문구 방향</text>
+  <rect x="128" y="856" width="126" height="36" rx="18" fill="#eeefff" stroke="#7777df"/>
+  <text x="191" y="879" class="small" text-anchor="middle" fill="#4d4db8" font-weight="700">핵심 정보</text>
+  <rect x="263" y="856" width="126" height="36" rx="18" class="box"/>
+  <text x="326" y="879" class="small muted" text-anchor="middle">호기심 유도</text>
+  <rect x="398" y="856" width="144" height="36" rx="18" class="box"/>
+  <text x="470" y="879" class="small muted" text-anchor="middle">문제 해결 · 대비</text>
+
+  <rect x="128" y="920" width="414" height="56" rx="9" class="accent"/>
+  <text x="335" y="955" font-size="16" class="accentText" text-anchor="middle">문구 후보 만들기</text>
+  <text x="335" y="1005" class="small muted" text-anchor="middle">자막 원문은 분석 기록에 저장하지 않아요.</text>
+
+  <!-- Results panel -->
+  <text x="622" y="271" class="heading">2. 썸네일 문구 후보</text>
+  <rect x="1213" y="245" width="95" height="30" rx="15" fill="#f1f2f5"/>
+  <text x="1260" y="265" class="small muted" text-anchor="middle">5개 생성</text>
+  <text x="622" y="299" class="small muted">마음에 드는 문구를 골라 다듬고 복사해 보세요.</text>
+
+  <!-- Candidate 1 -->
+  <rect x="622" y="323" width="686" height="183" rx="10" fill="#ffffff" stroke="#7777df" stroke-width="1.7"/>
+  <circle cx="650" cy="352" r="13" fill="#eeefff"/>
+  <text x="650" y="357" class="small" text-anchor="middle" fill="#4d4db8" font-weight="700">1</text>
+  <rect x="675" y="338" width="86" height="26" rx="13" fill="#f1f2ff"/>
+  <text x="718" y="356" font-size="12" text-anchor="middle" fill="#4d4db8">핵심 정보</text>
+  <rect x="1243" y="339" width="38" height="28" rx="6" fill="#f4f4ff"/>
+  <path d="M1257 347h10v12h-10zM1253 351h-2v12h10v-2" fill="none" stroke="#5b5bd6" stroke-width="1.4"/>
+  <text x="651" y="405" font-size="24" font-weight="700">아침 5시에 일어나면 생기는 변화</text>
+  <text x="651" y="438" class="small muted">자막 근거</text>
+  <rect x="651" y="448" width="630" height="35" rx="5" fill="#f7f8fa"/>
+  <text x="664" y="471" class="small">“한 달 동안 아침 루틴을 바꿔본 결과를 이야기해보려고 합니다.”</text>
+  <text x="1279" y="471" font-size="12" text-anchor="end" fill="#5b5bd6">수정</text>
+
+  <!-- Candidate 2 -->
+  <rect x="622" y="520" width="686" height="183" rx="10" class="box"/>
+  <circle cx="650" cy="549" r="13" fill="#f1f2f5"/>
+  <text x="650" y="554" class="small" text-anchor="middle" font-weight="700">2</text>
+  <rect x="675" y="535" width="86" height="26" rx="13" fill="#f1f2ff"/>
+  <text x="718" y="553" font-size="12" text-anchor="middle" fill="#4d4db8">호기심</text>
+  <rect x="1243" y="536" width="38" height="28" rx="6" fill="#f4f4f6"/>
+  <path d="M1257 544h10v12h-10zM1253 548h-2v12h10v-2" fill="none" stroke="#777e89" stroke-width="1.4"/>
+  <text x="651" y="602" font-size="24" font-weight="700">한 달 동안 아침을 바꿔봤더니</text>
+  <text x="651" y="635" class="small muted">자막 근거</text>
+  <rect x="651" y="645" width="630" height="35" rx="5" fill="#f7f8fa"/>
+  <text x="664" y="668" class="small">“처음에는 매일 일찍 일어나는 게 가장 힘들었는데요...”</text>
+  <text x="1279" y="668" font-size="12" text-anchor="end" fill="#5b5bd6">수정</text>
+
+  <!-- Candidate 3 -->
+  <rect x="622" y="717" width="686" height="183" rx="10" class="box"/>
+  <circle cx="650" cy="746" r="13" fill="#f1f2f5"/>
+  <text x="650" y="751" class="small" text-anchor="middle" font-weight="700">3</text>
+  <rect x="675" y="732" width="86" height="26" rx="13" fill="#f1f2ff"/>
+  <text x="718" y="750" font-size="12" text-anchor="middle" fill="#4d4db8">문제 해결</text>
+  <rect x="1243" y="733" width="38" height="28" rx="6" fill="#f4f4f6"/>
+  <path d="M1257 741h10v12h-10zM1253 745h-2v12h10v-2" fill="none" stroke="#777e89" stroke-width="1.4"/>
+  <text x="651" y="799" font-size="24" font-weight="700">아침 5시 기상, 한 달간 도전해봤습니다</text>
+  <text x="651" y="832" class="small muted">자막 근거</text>
+  <rect x="651" y="842" width="630" height="35" rx="5" fill="#f7f8fa"/>
+  <text x="664" y="865" class="small">“매일 일찍 일어나는 게 가장 힘들었는데요...”</text>
+  <text x="1279" y="865" font-size="12" text-anchor="end" fill="#5b5bd6">수정</text>
+
+  <text x="622" y="935" class="small muted">나머지 후보 2개는 아래에서 더 볼 수 있어요.</text>
+  <line x1="622" y1="956" x2="1308" y2="956" class="line"/>
+  <text x="622" y="988" class="label">이 결과가 도움이 되었나요?</text>
+  <rect x="827" y="968" width="114" height="36" rx="18" class="box"/>
+  <text x="884" y="991" class="small" text-anchor="middle">네, 유용해요</text>
+  <rect x="951" y="968" width="147" height="36" rx="18" class="box"/>
+  <text x="1024" y="991" class="small" text-anchor="middle">내용과 달라요</text>
+  <text x="1308" y="1030" class="small muted" text-anchor="end">문구는 자막을 바탕으로 만든 초안이에요. 게시 전 내용을 확인해 주세요.</text>
+
+  <!-- Footer note -->
+  <text x="100" y="1086" class="small muted">화면 설계 초안 · 데스크톱 화면 · 모바일에서는 입력과 결과를 세로로 배치</text>
+</svg>
