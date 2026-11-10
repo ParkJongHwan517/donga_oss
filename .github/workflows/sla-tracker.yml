@@ -1,0 +1,46 @@
+# 응답 SLA(48시간)를 넘긴 이슈에 라벨을 붙인다. (초안)
+# 기존 이슈에 한꺼번에 라벨이 붙는 것을 막기 위해 schedule은 주석 처리했다.
+# 사용하려면 schedule 주석을 해제한다.
+name: SLA Tracker
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 0 * * *" # 매일 00:00 UTC
+
+permissions:
+  issues: write
+
+env:
+  SLA_HOURS: 48
+
+jobs:
+  check-sla:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label issues past SLA
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          gh label create sla-breached --repo "$REPO" --color B60205 \
+            --description "응답 SLA 초과" 2>/dev/null || true
+
+          CUTOFF=$(date -u -d "${SLA_HOURS} hours ago" +%Y-%m-%dT%H:%M:%SZ)
+          echo "Cutoff: $CUTOFF"
+
+          # 열려 있고, 댓글이 없고, 기준 시각보다 오래됐고, 아직 라벨이 없는 이슈
+          NUMBERS=$(gh issue list --repo "$REPO" --state open --limit 200 \
+            --json number,createdAt,comments,labels \
+            --jq ".[]
+              | select((.comments | length) == 0)
+              | select(.createdAt < \"$CUTOFF\")
+              | select([.labels[].name] | (index(\"sla-breached\") or index(\"weekly-summary\")) | not)
+              | .number")
+
+          for N in $NUMBERS; do
+            echo "SLA breached: #$N"
+            gh issue edit "$N" --repo "$REPO" --add-label sla-breached
+          done
+
+          echo "Done. Breached count: $(echo "$NUMBERS" | grep -c . || true)"
