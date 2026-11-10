@@ -9,6 +9,17 @@
 - 코드나 문서 수정: 아래 브랜치 전략과 PR 절차를 따릅니다.
 - 처음이라면 [Wiki의 Getting Started](https://github.com/ParkJongHwan517/donga_oss/wiki/Getting-Started)부터 읽으세요.
 
+## 로컬에서 검사하기
+PR을 올리기 전에 CI와 같은 검사를 직접 실행할 수 있습니다.
+
+```bash
+python -m pip install -r requirements-dev.txt
+ruff check .          # lint
+ruff format --check . # 포맷
+python -m pytest      # 테스트
+```
+GitHub Actions의 `CI` 워크플로우가 PR마다 같은 검사를 Python 3.10~3.13, Ubuntu/Windows/macOS 조합에서 실행합니다.
+
 ## 브랜치 전략 (Feature Branch)
 - `main`: 항상 배포 가능한 상태. 직접 push 금지, PR로만 병합.
 - 작업마다 `main`에서 브랜치를 새로 만든다.
