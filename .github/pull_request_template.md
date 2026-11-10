@@ -8,7 +8,9 @@
 - [ ] feat: 새로운 기능
 - [ ] fix: 버그 수정
 - [ ] docs: 문서 변경
-- [ ] refactor / chore / test
+- [ ] refactor: 리팩터링
+- [ ] chore: 설정/기타
+- [ ] test: 테스트
 
 ## 체크리스트
 - [ ] 브랜치 이름이 규칙(`타입/설명`)을 따른다
