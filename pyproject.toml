@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fit-compare"
-version = "0.1.0"
+version = "0.2.0"
 description = "FIT: Reference outFit 기준 상품 실측 비교 로직"
 readme = "README.md"
 requires-python = ">=3.10"

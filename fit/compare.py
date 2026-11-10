@@ -38,3 +38,22 @@ def compare_garments(
         diff = round(product[name] - reference[name], 1)
         result[name] = {"diff_cm": diff, "summary": describe_diff(diff)}
     return result
+
+
+def summarize_fit(comparison: dict[str, dict[str, float | str]]) -> str:
+    """compare_garments의 결과를 사용자에게 보여줄 한 줄 요약으로 바꾼다.
+
+    모든 항목이 '거의 비슷함'이면 같은 핏이라고 알려주고,
+    그렇지 않으면 차이가 나는 항목만 이름순으로 나열한다.
+    """
+    if not comparison:
+        return "비교할 항목이 없습니다"
+
+    different = [
+        f"{name} {item['summary']}"
+        for name, item in sorted(comparison.items())
+        if item["summary"] != "거의 비슷함"
+    ]
+    if not different:
+        return "기준 옷과 거의 같은 핏입니다"
+    return ", ".join(different)
