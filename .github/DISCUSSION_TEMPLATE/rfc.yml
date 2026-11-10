@@ -5,7 +5,7 @@ body:
     attributes:
       value: |
         큰 변경을 하기 전에 의견을 모으는 RFC(Request for Comments) 양식입니다.
-        결론이 나면 [ADR](../tree/main/docs/adr)로 기록합니다.
+        결론이 나면 [ADR](https://github.com/ParkJongHwan517/donga_oss/tree/main/docs/adr)로 기록합니다.
   - type: textarea
     id: summary
     attributes:
