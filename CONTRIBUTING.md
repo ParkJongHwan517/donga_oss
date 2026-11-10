@@ -1,5 +1,14 @@
 # Contributing Guide
 
+기여해 주셔서 감사합니다. 이 프로젝트의 모든 참여자는 [행동강령](CODE_OF_CONDUCT.md)을 지켜야 합니다.
+이 프로젝트에 기여한 내용은 [MIT License](LICENSE)로 배포됩니다.
+
+## 기여하는 방법
+- 버그나 제안: [Issues](https://github.com/ParkJongHwan517/donga_oss/issues)에 남깁니다. (템플릿 사용)
+- 질문이나 아이디어: [Discussions](https://github.com/ParkJongHwan517/donga_oss/discussions)에서 이야기합니다.
+- 코드나 문서 수정: 아래 브랜치 전략과 PR 절차를 따릅니다.
+- 처음이라면 [Wiki의 Getting Started](https://github.com/ParkJongHwan517/donga_oss/wiki/Getting-Started)부터 읽으세요.
+
 ## 브랜치 전략 (Feature Branch)
 - `main`: 항상 배포 가능한 상태. 직접 push 금지, PR로만 병합.
 - 작업마다 `main`에서 브랜치를 새로 만든다.
