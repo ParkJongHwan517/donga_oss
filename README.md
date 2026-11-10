@@ -7,7 +7,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**바로가기**: [Wiki](https://github.com/ParkJongHwan517/donga_oss/wiki) · [Discussions](https://github.com/ParkJongHwan517/donga_oss/discussions) · [Issues](https://github.com/ParkJongHwan517/donga_oss/issues) · [기여 가이드](CONTRIBUTING.md) · [행동강령](CODE_OF_CONDUCT.md) · [라이선스](LICENSE)
+**바로가기**: [Wiki](https://github.com/ParkJongHwan517/donga_oss/wiki) · [Discussions](https://github.com/ParkJongHwan517/donga_oss/discussions) · [Issues](https://github.com/ParkJongHwan517/donga_oss/issues) · [기여 가이드](CONTRIBUTING.md) · [행동강령](CODE_OF_CONDUCT.md) · [라이선스](LICENSE) · [CI 최적화 리포트](docs/ci-optimization-report.md)
 
 > 개발 중인 프로젝트입니다. 12주 마일스톤은 아래에서 확인하세요.
 
