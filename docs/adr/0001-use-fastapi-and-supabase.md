@@ -1,7 +1,7 @@
 # ADR-0001: 백엔드로 FastAPI와 Supabase를 사용한다
 
 - **상태**: Accepted
-- **날짜**: 2026-11-10
+- **날짜**: 2026-11-10 (README의 기술스택 결정을 소급해 기록)
 - **결정자**: @ParkJongHwan517
 - **관련**: [README 기술스택](../../README.md)
 
