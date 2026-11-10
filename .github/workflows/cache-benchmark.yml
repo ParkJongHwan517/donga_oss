@@ -1,0 +1,104 @@
+# pip 캐시 효과를 같은 조건에서 비교 측정한다. (수동 실행)
+#   no-cache   : 캐시를 쓰지 않음 (전)
+#   cache-cold : 캐시를 쓰지만 처음이라 미스 (캐시를 만드는 비용)
+#   cache-warm : cache-cold가 만든 캐시를 복원 (후)
+# 같은 워크플로우를 여러 번 실행해 평균을 내고, 결과는
+# scripts/cache_benchmark_report.py 로 모아서 docs/ci-optimization-report.md 에 정리한다.
+name: Cache Benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      python-version:
+        description: 측정에 사용할 Python 버전
+        type: string
+        default: "3.12"
+
+permissions:
+  contents: read
+
+env:
+  # 실행마다 독립된 캐시 키를 쓰기 위한 접미사
+  KEY_SUFFIX: -bench-${{ github.run_id }}-${{ github.run_attempt }}
+
+jobs:
+  no-cache:
+    name: no-cache
+    runs-on: ubuntu-latest
+    outputs:
+      install-seconds: ${{ steps.env.outputs.install-seconds }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python environment
+        id: env
+        uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ inputs.python-version }}
+          use-cache: "false"
+
+  cache-cold:
+    name: cache-cold
+    runs-on: ubuntu-latest
+    outputs:
+      install-seconds: ${{ steps.env.outputs.install-seconds }}
+      cache-hit: ${{ steps.env.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python environment
+        id: env
+        uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ inputs.python-version }}
+          use-cache: "true"
+          cache-key-suffix: ${{ env.KEY_SUFFIX }}
+          use-restore-keys: "false"
+
+  cache-warm:
+    name: cache-warm
+    needs: cache-cold # 캐시는 cold 잡이 끝날 때 저장되므로 그 뒤에 실행한다.
+    runs-on: ubuntu-latest
+    outputs:
+      install-seconds: ${{ steps.env.outputs.install-seconds }}
+      cache-hit: ${{ steps.env.outputs.cache-hit }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python environment
+        id: env
+        uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ inputs.python-version }}
+          use-cache: "true"
+          cache-key-suffix: ${{ env.KEY_SUFFIX }}
+          use-restore-keys: "false"
+
+  report:
+    name: report
+    needs: [no-cache, cache-cold, cache-warm]
+    runs-on: ubuntu-latest
+    env:
+      NO_CACHE: ${{ needs.no-cache.outputs.install-seconds }}
+      COLD: ${{ needs.cache-cold.outputs.install-seconds }}
+      WARM: ${{ needs.cache-warm.outputs.install-seconds }}
+      COLD_HIT: ${{ needs.cache-cold.outputs.cache-hit }}
+      WARM_HIT: ${{ needs.cache-warm.outputs.cache-hit }}
+    steps:
+      - name: Summarize install time
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import os
+
+          no_cache = int(os.environ["NO_CACHE"])
+          cold = int(os.environ["COLD"])
+          warm = int(os.environ["WARM"])
+
+          def gain(before, after):
+              return "n/a" if before == 0 else f"{(before - after) / before * 100:.1f}%"
+
+          print("## pip 캐시 벤치마크 (의존성 설치 시간)")
+          print()
+          print("| 구분 | 설치 시간(초) | 캐시 히트 | no-cache 대비 개선 |")
+          print("|---|---|---|---|")
+          print(f"| no-cache | {no_cache} | - | - |")
+          print(f"| cache-cold | {cold} | {os.environ['COLD_HIT'] or 'false'} | {gain(no_cache, cold)} |")
+          print(f"| cache-warm | {warm} | {os.environ['WARM_HIT'] or 'false'} | {gain(no_cache, warm)} |")
+          PY
