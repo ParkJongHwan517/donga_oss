@@ -1,0 +1,151 @@
+# Build -> Test -> Deploy 파이프라인.
+# 각 단계는 needs로 이어지고, 단계 사이의 결과물은 아티팩트로 주고받는다.
+name: Build Test Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "배포 단계까지 실행할지 여부"
+        type: boolean
+        default: true
+
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # 1) Build: 패키지를 만들어 아티팩트로 올린다.
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Install build tools
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Read package version
+        id: meta
+        run: |
+          VERSION=$(python -c "import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Building version $VERSION"
+
+      - name: Build wheel and sdist
+        run: python -m build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  # 2) Test: 빌드된 패키지를 내려받아 설치한 뒤, 설치본으로 테스트한다.
+  test:
+    name: Test built package (${{ matrix.os }})
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Install built wheel and pytest
+        shell: bash
+        run: |
+          python -m pip install pytest
+          python -m pip install dist/*.whl
+
+      # 소스 폴더(fit/)가 아니라 설치된 패키지를 검증하도록 tests만 복사해서 실행한다.
+      - name: Run tests against installed package
+        shell: bash
+        run: |
+          mkdir ../run-tests
+          cp -r tests ../run-tests/tests
+          cd ../run-tests
+          python -m pytest -q tests
+
+  # 3) Deploy: 테스트를 통과한 아티팩트만 배포한다.
+  deploy:
+    name: Deploy (production)
+    needs: [build, test]
+    if: github.event_name == 'push' || inputs.deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    # Secrets는 이 단계에서만 주입한다. 로그에는 마스킹되어 보인다.
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Check secrets (값은 출력하지 않음)
+        run: |
+          if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_KEY" ]; then
+            echo "Deploy secrets are available."
+          else
+            echo "::warning::SUPABASE_URL / SUPABASE_KEY secrets are not configured."
+          fi
+
+      # 실제 서버가 없으므로 배포 동작은 배포 폴더를 만드는 것으로 대신한다.
+      - name: Deploy package (simulated)
+        run: |
+          mkdir -p deployed
+          cp dist/*.whl deployed/
+          {
+            echo "version: ${{ needs.build.outputs.version }}"
+            echo "commit: ${{ github.sha }}"
+            echo "deployed_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "files:"
+            ls deployed | sed 's/^/  - /'
+          } > deployed/MANIFEST.txt
+          cat deployed/MANIFEST.txt
+
+      - name: Upload deploy report
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-report
+          path: deployed/
+          retention-days: 7
+
+      - name: Write job summary
+        run: |
+          {
+            echo "## Deploy 완료"
+            echo "- 버전: ${{ needs.build.outputs.version }}"
+            echo "- 커밋: \`${{ github.sha }}\`"
+            echo "- 환경: production"
+          } >> "$GITHUB_STEP_SUMMARY"
