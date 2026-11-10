@@ -5,6 +5,14 @@
 
 ---
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+**바로가기**: [Wiki](https://github.com/ParkJongHwan517/donga_oss/wiki) · [Discussions](https://github.com/ParkJongHwan517/donga_oss/discussions) · [Issues](https://github.com/ParkJongHwan517/donga_oss/issues) · [기여 가이드](CONTRIBUTING.md) · [행동강령](CODE_OF_CONDUCT.md) · [라이선스](LICENSE)
+
+> 개발 중인 프로젝트입니다. 12주 마일스톤은 아래에서 확인하세요.
+
+---
+
 ## 프로젝트명
 
 **FIT**
@@ -311,5 +319,28 @@ GitHub Actions를 이용하여 DORA 지표를 수집하였다.
 Chart.js를 이용하여 배포 결과를 시각화하였다.
 
 ![DORA Metrics](docs/images/subject.png)
+
+## 시작하기
+
+개발 환경 준비는 [Wiki의 Getting Started](https://github.com/ParkJongHwan517/donga_oss/wiki/Getting-Started)를, 자주 겪는 문제는 [Troubleshooting](https://github.com/ParkJongHwan517/donga_oss/wiki/Troubleshooting)을 참고하세요.
+
+## 기여하기
+
+기여를 환영합니다. 버그 제보, 기능 제안, 문서 개선, PR 모두 가능합니다.
+
+1. 이슈나 [Discussions](https://github.com/ParkJongHwan517/donga_oss/discussions)에서 먼저 이야기를 나눕니다.
+2. `main`에서 feature 브랜치를 만들어 작업합니다.
+3. Conventional Commits 형식으로 커밋하고 PR을 올립니다.
+4. 리뷰는 `[MUST]` / `[SHOULD]` 태그로 진행합니다.
+
+자세한 규칙은 [CONTRIBUTING.md](CONTRIBUTING.md)와 [REVIEW_GUIDE.md](REVIEW_GUIDE.md)에 있습니다.
+
+## 행동강령
+
+이 프로젝트는 [행동강령](CODE_OF_CONDUCT.md)을 따릅니다. 참여하는 모든 사람은 이를 지켜야 합니다.
+
+## 라이선스
+
+[MIT License](LICENSE)로 배포합니다. 라이선스를 고른 이유는 [라이선스 비교](docs/license-comparison.md)에 정리했습니다.
 
 <!-- test -->
