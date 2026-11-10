@@ -14,7 +14,7 @@
 | 📝 RFC | Open-ended | 큰 변경 제안과 토론 | "RFC: 핏 비교 결과 표시 방식" |
 
 ## RFC 진행 절차
-1. **RFC** 카테고리에서 새 토론을 만든다. (양식: `.github/DISCUSSION_TEMPLATE/rfc.yml`)
+1. **RFC** 카테고리에서 새 토론을 만든다. (양식: `.github/DISCUSSION_TEMPLATE/rfc.yml`) 카테고리 슬러그가 `rfc`여야 이 양식이 적용된다.
 2. 의견 수렴 기간(3일~2주) 동안 댓글로 논의한다.
 3. 작성자가 결론을 요약해 댓글로 남기고, 토론을 마무리한다.
 4. 채택된 결정은 [`docs/adr/`](adr/README.md)에 ADR로 기록한다.
