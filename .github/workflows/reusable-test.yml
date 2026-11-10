@@ -1,0 +1,64 @@
+# 재사용 가능한 테스트 워크플로우 (workflow_call).
+# ci.yml 등 여러 워크플로우가 같은 테스트 절차를 호출해서 쓴다.
+name: Reusable Test
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        description: 실행할 러너
+        type: string
+        default: ubuntu-latest
+      python-version:
+        description: Python 버전
+        type: string
+        default: "3.12"
+      use-cache:
+        description: pip 캐시 사용 여부
+        type: boolean
+        default: true
+    secrets:
+      SUPABASE_URL:
+        required: false
+      SUPABASE_KEY:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ inputs.os }}, py${{ inputs.python-version }})
+    runs-on: ${{ inputs.os }}
+    # Secrets는 환경 변수로 주입한다. 값은 로그에서 자동으로 마스킹된다.
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python environment
+        uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ inputs.python-version }}
+          use-cache: ${{ inputs.use-cache }}
+
+      - name: Check injected secrets (값은 출력하지 않음)
+        shell: bash
+        run: |
+          if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_KEY" ]; then
+            echo "Secrets injected: SUPABASE_URL, SUPABASE_KEY (key length: ${#SUPABASE_KEY})"
+          else
+            echo "Secrets are not available in this run (fork PR or not configured). Continuing."
+          fi
+
+      - name: Run tests
+        run: python -m pytest --junitxml=test-results.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ inputs.os }}-py${{ inputs.python-version }}
+          path: test-results.xml
+          retention-days: 7

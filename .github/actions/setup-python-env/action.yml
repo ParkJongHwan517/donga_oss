@@ -1,0 +1,64 @@
+name: Setup Python environment
+description: Python 설치, pip 캐시 복원, 의존성 설치를 한 번에 처리하는 Composite Action
+
+inputs:
+  python-version:
+    description: 설치할 Python 버전
+    required: false
+    default: "3.12"
+  use-cache:
+    description: pip 캐시 사용 여부 (true/false). 캐시 효과를 측정할 때 false로 끈다.
+    required: false
+    default: "true"
+  cache-key-suffix:
+    description: 캐시 키 뒤에 붙일 문자열. 벤치마크에서 독립된 캐시를 만들 때 쓴다.
+    required: false
+    default: ""
+  use-restore-keys:
+    description: 정확히 일치하는 키가 없을 때 비슷한 키로 복원할지 여부 (true/false)
+    required: false
+    default: "true"
+  requirements:
+    description: 설치할 requirements 파일
+    required: false
+    default: requirements-dev.txt
+
+outputs:
+  install-seconds:
+    description: 의존성 설치에 걸린 시간(초)
+    value: ${{ steps.install.outputs.seconds }}
+  cache-hit:
+    description: 정확히 일치하는 캐시를 찾았는지 여부
+    value: ${{ steps.cache.outputs.cache-hit }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python ${{ inputs.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Get pip cache directory
+      id: pipcache
+      shell: bash
+      run: echo "dir=$(python -m pip cache dir)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore pip cache
+      id: cache
+      if: inputs.use-cache == 'true'
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.pipcache.outputs.dir }}
+        key: pip-${{ runner.os }}-py${{ inputs.python-version }}-${{ hashFiles('requirements*.txt') }}${{ inputs.cache-key-suffix }}
+        restore-keys: ${{ inputs.use-restore-keys == 'true' && format('pip-{0}-py{1}-', runner.os, inputs.python-version) || '' }}
+
+    - name: Install dependencies
+      id: install
+      shell: bash
+      run: |
+        START=$(date +%s)
+        python -m pip install -r "${{ inputs.requirements }}"
+        END=$(date +%s)
+        echo "seconds=$((END - START))" >> "$GITHUB_OUTPUT"
+        echo "Dependencies installed in $((END - START))s (cache-hit: '${{ steps.cache.outputs.cache-hit }}')"
