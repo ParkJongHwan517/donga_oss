@@ -1,6 +1,6 @@
 import pytest
 
-from fit import compare_garments, describe_diff
+from fit import compare_garments, describe_diff, summarize_fit
 
 
 @pytest.mark.parametrize(
@@ -34,3 +34,22 @@ def test_compare_garments_ignores_unshared_items():
     result = compare_garments({"허리": 38.0, "밑위": 30.0}, {"허리": 38.0, "밑단": 22.0})
 
     assert list(result) == ["허리"]
+
+
+def test_summarize_fit_same_fit():
+    comparison = compare_garments({"허리": 38.0, "총장": 105.0}, {"허리": 38.4, "총장": 105.8})
+
+    assert summarize_fit(comparison) == "기준 옷과 거의 같은 핏입니다"
+
+
+def test_summarize_fit_lists_only_different_items_sorted():
+    comparison = compare_garments(
+        {"허리": 38.0, "총장": 105.0, "허벅지": 30.0},
+        {"허리": 38.5, "총장": 101.0, "허벅지": 31.5},
+    )
+
+    assert summarize_fit(comparison) == "총장 많이 작음, 허벅지 조금 큼"
+
+
+def test_summarize_fit_empty():
+    assert summarize_fit({}) == "비교할 항목이 없습니다"
